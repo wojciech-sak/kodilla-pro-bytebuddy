@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.kodilla'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'net.bytebuddy:byte-buddy:1.12.18'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    jar {
+        from {
+            configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+        }
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        manifest {
+            attributes "Main-Class": 'com.kodilla.bytebuddy.BuddyAppJavaAgent'
+        }
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
