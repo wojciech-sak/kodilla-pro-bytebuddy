@@ -14,19 +14,21 @@ repositories {
 
 dependencies {
     implementation 'net.bytebuddy:byte-buddy:1.10.13'
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
     jar {
         from {
             configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
         }
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest {
             attributes "Premain-Class": 'com.kodilla.agent.Agent',
                     "Can-Redefine-Classes" : "true",
                     "Can-Retransform-Classes" : "true"
 
         }
+    }
+    bootJar {
+        enabled = false
     }
 }
 
